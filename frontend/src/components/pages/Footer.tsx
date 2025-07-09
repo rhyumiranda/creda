@@ -1,12 +1,5 @@
 import Link from "next/link"
 
-const footerLinks = {
-  Product: ["Features", "Documentation", "API Reference", "SDKs", "Status"],
-  Company: ["About", "Blog", "Careers", "Press", "Partners"],
-  Resources: ["Community", "Help Center", "Guides", "Webinars", "Security"],
-  Legal: ["Privacy", "Terms", "Cookies", "Licenses", "Settings"],
-}
-
 export function Footer() {
   return (
     <footer className="border-t border-gray-800/50 bg-black">
