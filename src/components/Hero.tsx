@@ -6,9 +6,9 @@ import { GridBackgroundDemo } from "./ui/GridBackgroundDemo";
 export function Hero() {
   return (
     <>
-      <GridBackgroundDemo />
-      <Spotlight />
       <section className="relative overflow-hidden wrapper">
+        <GridBackgroundDemo />
+        <Spotlight />
         <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 pt-36 pb-32 flex items-center justify-center h-screen">
           <div className=" flex text-center justify-center items-center flex-col">
             <div className="mb-8 flex">

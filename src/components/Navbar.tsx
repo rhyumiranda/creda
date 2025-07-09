@@ -4,7 +4,6 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { ChevronDown } from "lucide-react"
 import { pb } from "@/lib/utils"
-import { Avatar } from "@radix-ui/react-avatar"
 
 export function Header() {
   const handleGithubAuth = async () => {
@@ -57,17 +56,11 @@ export function Header() {
           </nav>
 
           <div className="flex items-center space-x-4">
-            {isLoggedIn ? (
-              <div className="w-8 h-8 rounded-full cursor-pointer bg-orange-300"></div>
-            ) : (
-              <Button onClick={handleGithubAuth} className="text-sm font-medium">
-                Connect Wallet
+            <Link href="/launchpad">
+              <Button className="text-sm font-medium">
+                Launchpad
               </Button>
-            )}
-            
-            <Button onClick={handleDisconnect} className="text-sm font-medium">
-              Logout
-            </Button>
+            </Link>
           </div>
         </div>
       </div>
