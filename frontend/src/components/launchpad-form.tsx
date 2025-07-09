@@ -16,6 +16,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Rocket, Building2, Coins, Copy, Check } from "lucide-react";
 import { pb } from "@/lib/utils";
+import { toast } from "sonner";
 
 const generateSecureApiKey = (): string => {
   const array = new Uint8Array(32);
@@ -34,6 +35,7 @@ export function LaunchpadForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
   const [showHashedKey, setShowHashedKey] = useState(false);
+  const [walletAddress, setWalletAddress] = useState<string>("");
 
   const [formDataOrganization, setFormDataOrganization] = useState({
     name: "",
@@ -106,13 +108,6 @@ export function LaunchpadForm() {
     console.log("Token Form Data: ", formDataToken);
   }, [formDataOrganization, formDataToken]);
 
-  const handleTokenChange = (field: string, value: string | number) => {
-    setFormDataToken((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
-
   const regenerateApiKey = () => {
     const newKey = generateSecureApiKey();
     setFormDataToken((prev) => ({
@@ -183,17 +178,28 @@ export function LaunchpadForm() {
 
       console.log("Auth successful:", authData);
 
-      // Generate a wallet address for the user
-      const walletAddress = generateWalletAddress();
-      console.log("Generated wallet address:", walletAddress);
+      // Generate a wallet address for the user and store it in state
+      const generatedAddress = generateWalletAddress();
+      setWalletAddress(generatedAddress);
+      console.log("Generated wallet address:", generatedAddress);
 
       // Update the owner field with the authenticated user ID
       setFormDataOrganization((prev) => ({
         ...prev,
         owner: authData.record?.id || "",
       }));
+
+      // Show success toast
+      toast.success("Wallet connected successfully!", {
+        description: "You can now proceed with token creation.",
+        duration: 3000,
+      });
     } catch (error) {
       console.error("Wallet connection failed:", error);
+      toast.error("Failed to connect wallet", {
+        description: "Please try again or check your connection.",
+        duration: 4000,
+      });
     }
   };
 
@@ -202,11 +208,19 @@ export function LaunchpadForm() {
 
     // Check if wallet is connected
     if (!formDataOrganization.owner) {
-      alert("Please connect your wallet before creating a token.");
+      toast.error("Please connect your wallet before creating a token.", {
+        description: "You need to connect your wallet to proceed with token creation.",
+        duration: 4000,
+      });
       return;
     }
 
     setIsSubmitting(true);
+
+    // Show loading toast
+    const loadingToast = toast.loading("Creating your token...", {
+      description: "Setting up your organization and token on the blockchain.",
+    });
 
     try {
       console.log("Starting token creation process...");
@@ -231,92 +245,47 @@ export function LaunchpadForm() {
         .create(tokenDataWithOrgRef);
       console.log("Token created successfully:", tokenResponse);
 
-      // Success feedback
-      alert(
-        `🚀 Token created successfully!\n\nOrganization ID: ${organizationResponse.id}\nToken ID: ${tokenResponse.id}\nToken Symbol: ${formDataToken.token_symbol}`
-      );
+      // Dismiss loading toast
+      toast.dismiss(loadingToast);
+
+      // Show success toast
+      toast.success("🚀 Token created successfully!", {
+        description: `${formDataToken.token_symbol} token has been deployed. Organization ID: ${organizationResponse.id}`,
+        duration: 6000,
+        action: {
+          label: "View Details",
+          onClick: () => {
+            console.log("Viewing token details:", {
+              organizationId: organizationResponse.id,
+              tokenId: tokenResponse.id,
+              symbol: formDataToken.token_symbol
+            });
+          }
+        }
+      });
 
       // Optional: Reset form or redirect
       // resetForm();
     } catch (error) {
       console.error("Error creating token:", error);
+      
+      // Dismiss loading toast
+      toast.dismiss(loadingToast);
 
-      // More detailed error handling
+      // Show error toast with detailed message
       if (error instanceof Error) {
-        alert(`Failed to create token: ${error.message}`);
+        toast.error("Failed to create token", {
+          description: error.message,
+          duration: 5000,
+        });
       } else {
-        alert(
-          "Failed to create token. Please check your connection and try again."
-        );
+        toast.error("Token creation failed", {
+          description: "Please check your connection and try again. Contact support if the issue persists.",
+          duration: 5000,
+        });
       }
     } finally {
       setIsSubmitting(false);
-    }
-  };
-
-  const handleCreateToken = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    try {
-      console.log("Starting token creation process...");
-
-      // First, create the organization
-      console.log("Creating organization:", formDataOrganization);
-      const record = await pb.collection("organizations").create({
-        name: formDataOrganization.name,
-        owner: formDataOrganization.owner,
-      });
-      console.log("Organization created successfully:", record);
-
-      // Then, create the token with reference to the organization
-      try {
-        const secondRecord = await pb.collection("tokens").create({
-          token_name: formDataToken.token_name,
-          token_symbol: formDataToken.token_symbol,
-          token_price: formDataToken.token_price,
-          max_supply: formDataToken.max_supply,
-          current_supply: formDataToken.current_supply,
-          market_cap: formDataToken.market_capitalization,
-          secret_key: formDataToken.secret_key,
-          created_by: formDataOrganization.owner,
-          organization: record.id, // Link to the created organization
-        });
-        console.log("Token created successfully:", secondRecord);
-
-        // Success feedback
-        alert(
-          `🚀 Token created successfully!\n\nOrganization ID: ${record.id}\nToken ID: ${secondRecord.id}\nToken Symbol: ${formDataToken.token_symbol}`
-        );
-
-      } catch (tokenError) {
-        console.error("Error creating token:", tokenError);
-        
-        // If token creation fails, we might want to clean up the organization
-        try {
-          await pb.collection("organizations").delete(record.id);
-          console.log("Cleaned up organization after token creation failure");
-        } catch (cleanupError) {
-          console.error("Failed to cleanup organization:", cleanupError);
-        }
-
-        // Show token-specific error
-        if (tokenError instanceof Error) {
-          alert(`Failed to create token: ${tokenError.message}\n\nThe organization was cleaned up.`);
-        } else {
-          alert("Failed to create token. Please try again.");
-        }
-        throw tokenError; // Re-throw to be caught by outer catch
-      }
-
-    } catch (organizationError) {
-      console.error("Error creating organization:", organizationError);
-      
-      // Show organization-specific error
-      if (organizationError instanceof Error) {
-        alert(`Failed to create organization: ${organizationError.message}`);
-      } else {
-        alert("Failed to create organization. Please check your connection and try again.");
-      }
     }
   };
 
@@ -413,19 +382,21 @@ export function LaunchpadForm() {
                     </div>
                     <div className="flex-1">
                       <Input
-                        value="0xbc005628883ca79d369c95e0ceba7ec6d8e92e0b"
+                        value={walletAddress}
                         readOnly
                         className="bg-green-800/30 border-green-700 text-green-200 font-mono text-sm"
                       />
                     </div>
                     <Button
                       type="button"
-                      onClick={() =>
+                      onClick={() => {
+                        pb.authStore.clear();
+                        setWalletAddress("");
                         setFormDataOrganization((prev) => ({
                           ...prev,
                           owner: "",
-                        }))
-                      }
+                        }));
+                      }}
                       variant="outline"
                       size="sm"
                       className="border-green-700 text-green-300 hover:bg-green-800"
