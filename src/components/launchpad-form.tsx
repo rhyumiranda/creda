@@ -147,22 +147,22 @@ export function LaunchpadForm() {
     }
   };
 
-  const checkAuthState = () => {
-    console.log("Manual auth check:");
-    console.log("- authStore:", pb.authStore);
-    console.log("- isValid:", pb.authStore?.isValid);
-    console.log("- record:", pb.authStore?.record);
-    console.log("- userId:", pb.authStore?.record?.id);
+  // const checkAuthState = () => {
+  //   console.log("Manual auth check:");
+  //   console.log("- authStore:", pb.authStore);
+  //   console.log("- isValid:", pb.authStore?.isValid);
+  //   console.log("- record:", pb.authStore?.record);
+  //   console.log("- userId:", pb.authStore?.record?.id);
 
-    // Force update the owner field
-    const currentUserId = pb.authStore?.record?.id || "";
-    setFormDataOrganization((prev) => ({
-      ...prev,
-      owner: currentUserId,
-    }));
+  //   // Force update the owner field
+  //   const currentUserId = pb.authStore?.record?.id || "";
+  //   setFormDataOrganization((prev) => ({
+  //     ...prev,
+  //     owner: currentUserId,
+  //   }));
 
-    alert(`Current User ID: ${currentUserId || "Not logged in"}`);
-  };
+  //   alert(`Current User ID: ${currentUserId || "Not logged in"}`);
+  // };
 
   const generateWalletAddress = (): string => {
     // Generate a random Ethereum-style address (0x + 40 hex characters)
@@ -254,22 +254,70 @@ export function LaunchpadForm() {
     }
   };
 
-  const handleCreateToken = async () => {
-    const record = await pb.collection("organizations").create({
-      name: formDataOrganization.name,
-      owner: formDataOrganization.owner,
-    });
+  const handleCreateToken = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-    const secondRecord = await pb.collection("tokens").create({
-      token_name: formDataToken.token_name,
-      token_symbol: formDataToken.token_symbol,
-      token_price: formDataToken.token_price,
-      max_supply: formDataToken.max_supply,
-      current_supply: formDataToken.current_supply,
-      market_cap: formDataToken.market_capitalization,
-      secret_key: formDataToken.secret_key,
-      created_by: formDataOrganization.owner, // Set the creator
-    });
+    try {
+      console.log("Starting token creation process...");
+
+      // First, create the organization
+      console.log("Creating organization:", formDataOrganization);
+      const record = await pb.collection("organizations").create({
+        name: formDataOrganization.name,
+        owner: formDataOrganization.owner,
+      });
+      console.log("Organization created successfully:", record);
+
+      // Then, create the token with reference to the organization
+      try {
+        const secondRecord = await pb.collection("tokens").create({
+          token_name: formDataToken.token_name,
+          token_symbol: formDataToken.token_symbol,
+          token_price: formDataToken.token_price,
+          max_supply: formDataToken.max_supply,
+          current_supply: formDataToken.current_supply,
+          market_cap: formDataToken.market_capitalization,
+          secret_key: formDataToken.secret_key,
+          created_by: formDataOrganization.owner,
+          organization: record.id, // Link to the created organization
+        });
+        console.log("Token created successfully:", secondRecord);
+
+        // Success feedback
+        alert(
+          `🚀 Token created successfully!\n\nOrganization ID: ${record.id}\nToken ID: ${secondRecord.id}\nToken Symbol: ${formDataToken.token_symbol}`
+        );
+
+      } catch (tokenError) {
+        console.error("Error creating token:", tokenError);
+        
+        // If token creation fails, we might want to clean up the organization
+        try {
+          await pb.collection("organizations").delete(record.id);
+          console.log("Cleaned up organization after token creation failure");
+        } catch (cleanupError) {
+          console.error("Failed to cleanup organization:", cleanupError);
+        }
+
+        // Show token-specific error
+        if (tokenError instanceof Error) {
+          alert(`Failed to create token: ${tokenError.message}\n\nThe organization was cleaned up.`);
+        } else {
+          alert("Failed to create token. Please try again.");
+        }
+        throw tokenError; // Re-throw to be caught by outer catch
+      }
+
+    } catch (organizationError) {
+      console.error("Error creating organization:", organizationError);
+      
+      // Show organization-specific error
+      if (organizationError instanceof Error) {
+        alert(`Failed to create organization: ${organizationError.message}`);
+      } else {
+        alert("Failed to create organization. Please check your connection and try again.");
+      }
+    }
   };
 
   return (
