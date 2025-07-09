@@ -16,7 +16,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Rocket, Building2, Coins, Copy, Check } from "lucide-react";
 import { pb } from "@/lib/utils";
-import { toast } from "sonner";
+import {toast} from "sonner";
 
 const generateSecureApiKey = (): string => {
   const array = new Uint8Array(32);
