@@ -13,7 +13,7 @@ export default function LaunchpadPage() {
                 Token Launchpad
               </span>
             </h1>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-l text-gray-400 max-w-3xl mx-auto leading-relaxed">
               Create and deploy your loyalty token with our comprehensive launchpad platform.
             </p>
           </div>
