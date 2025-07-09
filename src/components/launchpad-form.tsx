@@ -14,7 +14,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Rocket, Building2, Coins } from "lucide-react";
+import { Rocket, Building2, Coins, Copy, Check } from "lucide-react";
 import { pb } from "@/lib/utils";
 
 const generateSecureApiKey = (): string => {
@@ -32,6 +32,8 @@ const generateSecureApiKey = (): string => {
 export function LaunchpadForm() {
   const basePrice = 0.1;
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
+  const [showHashedKey, setShowHashedKey] = useState(false);
 
   const [formDataOrganization, setFormDataOrganization] = useState({
     name: "",
@@ -117,7 +119,32 @@ export function LaunchpadForm() {
       ...prev,
       secret_key: newKey,
     }));
+    setShowHashedKey(false);
+    setIsCopied(false);
     console.log("New API key generated:", newKey);
+  };
+
+  const hashSecretKey = (key: string): string => {
+    if (key.length < 4) return key;
+    const prefix = key.substring(0, 6); // "lnr_sk"
+    const suffix = key.substring(key.length - 2); // last 2 characters
+    const maskedMiddle = "*".repeat(12);
+    return `${prefix}_${maskedMiddle}${suffix}`;
+  };
+
+  const copySecretKey = async () => {
+    try {
+      await navigator.clipboard.writeText(formDataToken.secret_key);
+      setIsCopied(true);
+      setShowHashedKey(true);
+
+      // Reset the copied state after 2 seconds
+      setTimeout(() => {
+        setIsCopied(false);
+      }, 2000);
+    } catch (err) {
+      console.error("Failed to copy secret key:", err);
+    }
   };
 
   const checkAuthState = () => {
@@ -227,13 +254,23 @@ export function LaunchpadForm() {
     }
   };
 
-  // const handleCreateToken = async () => {
-  //   const record = await pb.collection("organizations").create({
-  //     name: formDataOrganization.name,
-  //     owner: formDataOrganization.owner,
-  //   });
-    
-  // }
+  const handleCreateToken = async () => {
+    const record = await pb.collection("organizations").create({
+      name: formDataOrganization.name,
+      owner: formDataOrganization.owner,
+    });
+
+    const secondRecord = await pb.collection("tokens").create({
+      token_name: formDataToken.token_name,
+      token_symbol: formDataToken.token_symbol,
+      token_price: formDataToken.token_price,
+      max_supply: formDataToken.max_supply,
+      current_supply: formDataToken.current_supply,
+      market_cap: formDataToken.market_capitalization,
+      secret_key: formDataToken.secret_key,
+      created_by: formDataOrganization.owner, // Set the creator
+    });
+  };
 
   return (
     <div className="max-w-2xl mx-auto">
@@ -328,7 +365,7 @@ export function LaunchpadForm() {
                     </div>
                     <div className="flex-1">
                       <Input
-                        value={generateWalletAddress()}
+                        value="0xbc005628883ca79d369c95e0ceba7ec6d8e92e0b"
                         readOnly
                         className="bg-green-800/30 border-green-700 text-green-200 font-mono text-sm"
                       />
@@ -496,10 +533,27 @@ export function LaunchpadForm() {
                     <Input
                       id="secretKey"
                       type="text"
-                      value={formDataToken.secret_key}
+                      value={
+                        showHashedKey
+                          ? hashSecretKey(formDataToken.secret_key)
+                          : formDataToken.secret_key
+                      }
                       readOnly
                       className="bg-gray-800/50 border-gray-700 text-white font-mono text-sm flex-1"
                     />
+                    <Button
+                      type="button"
+                      onClick={copySecretKey}
+                      variant="outline"
+                      size="sm"
+                      className="border-gray-700 text-white hover:bg-gray-800 px-3"
+                    >
+                      {isCopied ? (
+                        <Check className="h-4 w-4 text-green-400" />
+                      ) : (
+                        <Copy className="h-4 w-4" />
+                      )}
+                    </Button>
                     <Button
                       type="button"
                       onClick={regenerateApiKey}
@@ -522,7 +576,7 @@ export function LaunchpadForm() {
             <div className="pt-4">
               <Button
                 type="submit"
-                disabled={!formDataOrganization.owner || isSubmitting}
+                onSubmit={handleSubmit}
                 className="w-full bg-white text-black hover:bg-gray-100 font-medium py-3 text-base disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? (
