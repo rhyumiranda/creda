@@ -2,6 +2,10 @@
 
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+
+import {
+  Code,
+} from "lucide-react"
 // import { ChevronDown } from "lucide-react"
 
 
@@ -40,8 +44,15 @@ export function Header() {
 
           <div className="flex items-center space-x-4">
             <Link href="/launchpad">
-              <Button className="text-sm font-medium">
+              <Button variant="default" size="sm">
                 Launchpad
+              </Button>
+            </Link>
+
+            <Link href="/dashboard">
+              <Button variant="outline" size="sm">
+                <Code className="w-4 h-4 mr-2" />
+                Developer Hub
               </Button>
             </Link>
           </div>
