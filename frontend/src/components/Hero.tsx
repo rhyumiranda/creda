@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { Spotlight } from "@/components/ui/spotlight";
 import { GridBackgroundDemo } from "./ui/GridBackgroundDemo";
-import Link from "next/link"
+import Link from "next/link";
 
 export function Hero() {
   return (
@@ -59,7 +59,7 @@ export function Hero() {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 mb-5">
-            <Link href="/launchpad">
+            <Link href="/dashboard">
               <Button
                 size="lg"
                 className="bg-white text-black hover:bg-gray-100 font-medium"
