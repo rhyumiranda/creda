@@ -1,9 +1,7 @@
 "use client"
 
-
-
 import Link from "next/link"
-
+import Header from "../Navbar"
 import { useState } from "react"
 import {
   Search,
@@ -121,7 +119,7 @@ const projects = [
   },
 ]
 
-export default function CredaDashboard() {
+export default function Dashboard() {
   const [searchQuery, setSearchQuery] = useState("")
   const [categoryFilter, setCategoryFilter] = useState("all")
   const [sortBy, setSortBy] = useState("activity")
@@ -158,7 +156,9 @@ export default function CredaDashboard() {
   )
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
+    <>
+     <Header />
+     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 pt-15">
       
       <div className="container mx-auto px-4 py-8">
         {/* Stats Overview */}
@@ -222,7 +222,7 @@ export default function CredaDashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Sidebar */}
           <div className="lg:col-span-1">
-            <div className="space-y-6">
+            <div className="space-y-6 grid gap-1">
               {/* Developer Resources */}
               <Card>
                 <CardHeader>
@@ -240,19 +240,19 @@ export default function CredaDashboard() {
                 </div>
 
                 <div>
-                    <Link href="">
+                    <Link href="https://creda-demo-project.vercel.app/">
                     <Button variant="outline" className="w-full justify-start bg-transparent" size="sm">
                         <Code className="w-4 h-4 mr-2" />
-                        Smart Contracts
+                        Live Demo
                     </Button>
                     </Link>
                 </div>
 
                 <div>
-                    <Link href="/dashboard/api-keys">
+                    <Link href="https://github.com/rhyumiranda/creda-demo">
                     <Button variant="outline" className="w-full justify-start bg-transparent" size="sm">
-                        <Key className="w-4 h-4 mr-2" />
-                        API Keys
+                        <Code className="w-4 h-4 mr-2" />
+                        Repository
                     </Button>
                     </Link>
                 </div>
@@ -261,8 +261,7 @@ export default function CredaDashboard() {
 
               </Card>
 
-              {/* Quick Actions */}
-              <Card>
+              {/* <Card>
                 <CardHeader>
                   <CardTitle className="text-lg">Quick Actions</CardTitle>
                 </CardHeader>
@@ -278,7 +277,7 @@ export default function CredaDashboard() {
                     View Analytics
                   </Button>
                 </CardContent>
-              </Card>
+              </Card> */}
             </div>
           </div>
 
@@ -420,5 +419,6 @@ export default function CredaDashboard() {
         </div>
       </div>
     </div>
+    </>
   )
 }
