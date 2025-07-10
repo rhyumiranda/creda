@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { ChevronDown } from "lucide-react"
+// import { ChevronDown } from "lucide-react"
 
 
 export function Header() {
@@ -21,7 +21,7 @@ export function Header() {
           </div>
 
           <nav className="hidden md:flex items-center space-x-8">
-            <div className="flex items-center space-x-1 text-gray-300 hover:text-white transition-colors cursor-pointer">
+            {/* <div className="flex items-center space-x-1 text-gray-300 hover:text-white transition-colors cursor-pointer">
               <span className="text-sm font-medium">Features</span>
               <ChevronDown className="h-4 w-4" />
             </div>
@@ -32,8 +32,8 @@ export function Header() {
             <div className="flex items-center space-x-1 text-gray-300 hover:text-white transition-colors cursor-pointer">
               <span className="text-sm font-medium">Resources</span>
               <ChevronDown className="h-4 w-4" />
-            </div>
-            <Link href="https://creda-1.gitbook.io/creda-docs/" className="text-sm font-medium text-gray-300 hover:text-white transition-colors">
+            </div> */}
+            <Link href="https://creda-1.gitbook.io/creda-docs/" target="_blank" className="text-sm font-medium text-gray-300 hover:text-white transition-colors">
               Docs
             </Link>
           </nav>
@@ -45,7 +45,7 @@ export function Header() {
               </Button>
             </Link>
           </div>
-        </div>
+        </div>  
       </div>
     </header>
   )

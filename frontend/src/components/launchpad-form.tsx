@@ -297,7 +297,7 @@ export function LaunchpadForm() {
             <Rocket className="h-6 w-6 text-white" />
           </div>
           <CardTitle className="text-2xl font-bold">
-            Launch Your Token
+            Launch Your Loyalty/Reward
           </CardTitle>
           <CardDescription className="text-gray-400">
             Fill in the details below to create and deploy your loyalty token
@@ -319,7 +319,7 @@ export function LaunchpadForm() {
                   htmlFor="organizationName"
                   className="text-sm font-medium text-gray-300"
                 >
-                  Organization Name
+                  Organization/Project Name
                 </Label>
                 <Input
                   id="organizationName"
@@ -357,10 +357,10 @@ export function LaunchpadForm() {
                       </svg>
                     </div>
                     <h3 className="text-lg font-semibold text-white mb-2">
-                      Connect Your Wallet
+                      Connect Your Project Wallet
                     </h3>
                     <p className="text-gray-400 text-sm mb-4">
-                      Connect your wallet to continue with token creation
+                      Connect your wallet to continue with loyalty/reward creation
                     </p>
                     <Button
                       type="button"
@@ -424,7 +424,7 @@ export function LaunchpadForm() {
                     htmlFor="tokenName"
                     className="text-sm font-medium text-gray-300"
                   >
-                    Token Name
+                    Loyalty/Reward Name
                   </Label>
                   <Input
                     id="tokenName"
@@ -447,7 +447,7 @@ export function LaunchpadForm() {
                     htmlFor="tokenSymbol"
                     className="text-sm font-medium text-gray-300"
                   >
-                    Token Symbol
+                    Loyalty/Reward Symbol
                   </Label>
                   <Input
                     id="tokenSymbol"
@@ -515,7 +515,7 @@ export function LaunchpadForm() {
 
                 <div className="space-y-2">
                   <Label className="text-sm font-medium text-gray-300">
-                    Token Price (USD)
+                    Loyalty/Reward Price (USD)
                   </Label>
                   <div className="bg-gray-800/30 border border-gray-700/50 rounded-lg p-3">
                     <span className="text-white font-mono">
@@ -537,7 +537,7 @@ export function LaunchpadForm() {
                     </span>
                   </div>
                   <p className="text-xs text-gray-500">
-                    Token price × Current supply
+                    Loyalty/Reward price × Current supply
                   </p>
                 </div>
 
