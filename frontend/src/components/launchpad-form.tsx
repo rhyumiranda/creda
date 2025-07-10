@@ -255,8 +255,8 @@ export function LaunchpadForm() {
         action: {
           label: "View Details",
           onClick: () => {
-            window.location.href = "creda-demo-project.vercel.app";
-            console.log("creda added") // Redirect to YouTube
+            window.location.href = "https://creda-demo-project.vercel.app";
+            console.log("creda demo added") // Redirect to YouTube
             console.log("Viewing token details:", {
               organizationId: organizationResponse.id,
               tokenId: tokenResponse.id,
