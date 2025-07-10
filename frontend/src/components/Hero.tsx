@@ -20,14 +20,13 @@ export function Hero() {
 
             <h1 className="text-5xl md:text-7xl font-bold tracking-tight leading-[1.1] mb-8">
               <span className="bg-gradient-to-b from-white to-gray-500 bg-clip-text text-transparent">
-                Loyalty for Developers
+                API-first loyalty software
               </span>
             </h1>
 
             <div className="max-w-2xl">
               <p className="text-xl text-gray-400 leading-relaxed mb-6">
-                The best way to build customer loyalty instead of losing them.
-                Integrate reward systems and currency incentives at scale.
+                a Web3 loyalty platform built on Aptos, enabling developers to launch on-chain rewards and gamification in minutes.
               </p>
             </div>
 
@@ -47,6 +46,15 @@ export function Hero() {
                 Documentation
               </Button>
             </div>
+            
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-8 text-sm text-gray-500 mt-6">
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                <span>99.9% Uptime</span>
+              </div>
+              <div>Free tier • No credit card required</div>
+              <div>Enterprise ready</div>
+          </div>
           </div>
         </div>
       </section>

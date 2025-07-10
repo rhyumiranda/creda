@@ -1,8 +1,10 @@
 import Header from '@/components/Navbar';
 import { Hero } from '../Hero';
+import { CodeDemo } from './CodeDemo';
 import { Features } from './Features';
 import { HowItWorks } from './HowItWorks';
-import { CTA } from './CTA';
+import { Pricing } from './pricing';
+import { Documentation } from './documentation';
 import { Footer } from './Footer';
 
 
@@ -11,9 +13,11 @@ export default function LandingPage() {
     <main>
       <Header/>
       <Hero/>
+      <CodeDemo/>
       <Features/>
       <HowItWorks/>
-      <CTA/>
+      <Pricing/>
+      <Documentation/>
       <Footer/>
     </main>
   )
