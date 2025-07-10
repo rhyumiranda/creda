@@ -319,7 +319,7 @@ export function LaunchpadForm() {
                   htmlFor="organizationName"
                   className="text-sm font-medium text-gray-300"
                 >
-                  Organization Name
+                  Organization/Project Name
                 </Label>
                 <Input
                   id="organizationName"
@@ -357,7 +357,7 @@ export function LaunchpadForm() {
                       </svg>
                     </div>
                     <h3 className="text-lg font-semibold text-white mb-2">
-                      Connect Your Wallet
+                      Connect Your Project Wallet
                     </h3>
                     <p className="text-gray-400 text-sm mb-4">
                       Connect your wallet to continue with token creation

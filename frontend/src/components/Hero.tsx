@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { Spotlight } from "@/components/ui/spotlight";
 import { GridBackgroundDemo } from "./ui/GridBackgroundDemo";
+import Link from "next/link"
 
 export function Hero() {
   return (
@@ -57,7 +58,8 @@ export function Hero() {
               </p>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col sm:flex-row gap-4 mb-5">
+            <Link href="/launchpad">
               <Button
                 size="lg"
                 className="bg-white text-black hover:bg-gray-100 font-medium"
@@ -65,13 +67,16 @@ export function Hero() {
                 Get Started
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
-              <Button
+            </Link>
+
+
+              {/* <Button
                 size="lg"
                 variant="outline"
                 className="border-gray-700 text-white hover:bg-gray-900 bg-transparent"
               >
                 Documentation
-              </Button>
+              </Button> */}
             </div>
             
             <div className="flex flex-col sm:flex-row items-center justify-center gap-8 text-sm text-gray-500 mt-6">
