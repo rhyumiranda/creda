@@ -1,8 +1,7 @@
-import React from 'react'
+import Dashboard from "@/components/pages/dashboard"
 
-import CredaDashboard from '@/components/pages/dashboard'
 export default function page() {
   return (
-    <CredaDashboard />
+    <Dashboard />
   )
 }
