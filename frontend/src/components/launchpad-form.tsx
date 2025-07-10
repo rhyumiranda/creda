@@ -255,6 +255,7 @@ export function LaunchpadForm() {
         action: {
           label: "View Details",
           onClick: () => {
+            window.location.href = "https://youtube.com"; // Redirect to YouTube
             console.log("Viewing token details:", {
               organizationId: organizationResponse.id,
               tokenId: tokenResponse.id,
