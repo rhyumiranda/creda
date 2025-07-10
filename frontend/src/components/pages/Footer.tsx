@@ -14,7 +14,7 @@ export function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
           <div className="col-span-2 md:col-span-1">
             <Link href="/" className="text-xl font-semibold tracking-tight mb-4 block">
-              BitLoyal
+              Creda
             </Link>
             <p className="text-gray-400 text-sm leading-relaxed mb-4">
               API-first Web3 loyalty platform built on Aptos blockchain.
@@ -56,7 +56,7 @@ export function Footer() {
         </div>
 
         <div className="border-t border-gray-800/50 mt-16 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-gray-400 text-sm">© {new Date().getFullYear()} BitLoyal. All rights reserved.</p>
+          <p className="text-gray-400 text-sm">© {new Date().getFullYear()} Creda. All rights reserved.</p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <Link href="#" className="text-gray-400 hover:text-white text-sm transition-colors">
               Privacy Policy
