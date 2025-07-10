@@ -10,7 +10,7 @@ export default function LaunchpadPage() {
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
               <span className="bg-gradient-to-b from-white to-gray-500 bg-clip-text text-transparent">
-                Token Launchpad
+                Loyalty/Reward Launchpad
               </span>
             </h1>
             <p className="text-l text-gray-400 max-w-3xl mx-auto leading-relaxed">
